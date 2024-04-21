@@ -1,0 +1,29 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  Starting template for {{cookiecutter.project_name}}
+
+Transform:
+- AWS::Serverless-2016-10-31
+
+Resources:
+  MyAppFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: MyApp
+      Handler: bootstrap
+      CodeUri: .
+      Runtime: provided.al2023
+      MemorySize: 2048
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /hello
+            Method: GET
+    Metadata:
+      BuildMethod: makefile
+
+Outputs:
+  MyAppApi:
+    Description: "API Gateway endpoint URL for Prod stage for MyApp function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
